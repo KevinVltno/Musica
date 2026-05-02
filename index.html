@@ -96,7 +96,7 @@
 
 <!-- PLAYER -->
 <footer id="player">
-  <div class="player-song">
+  <div class="player-song" id="player-song-tap" onclick="openMobilePanelIfMobile()">
     <div class="player-cover" id="player-cover">🎵</div>
     <div class="player-info">
       <div class="player-title" id="player-title">Pilih lagu untuk diputar</div>
@@ -148,6 +148,56 @@
     <input type="range" id="vol-range" min="0" max="100" value="70">
   </div>
 </footer>
+
+<!-- MOBILE PLAYER EXPANDED PANEL -->
+<div id="mobile-player-panel">
+  <div class="mpp-handle-wrap" onclick="closeMobilePanel()">
+    <div class="mpp-handle"></div>
+  </div>
+  <div class="mpp-song-info">
+    <div class="mpp-cover" id="mpp-cover">🎵</div>
+    <div class="mpp-meta">
+      <div class="mpp-title" id="mpp-title">Pilih lagu</div>
+      <div class="mpp-artist" id="mpp-artist">—</div>
+    </div>
+    <button class="player-like" id="mpp-like-btn" onclick="toggleLikePlayer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="mpp-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+  <div class="mpp-progress-wrap">
+    <div class="progress-bar mpp-progress-bar" id="mpp-progress-bar" onclick="seekSong(event)">
+      <div class="progress-fill" id="mpp-progress-fill"></div>
+    </div>
+    <div class="mpp-times">
+      <span id="mpp-time-cur">0:00</span>
+      <span id="mpp-time-total">0:00</span>
+    </div>
+  </div>
+  <div class="mpp-controls">
+    <button class="ctrl-btn" id="mpp-shuffle-btn" onclick="toggleShuffle()" title="Shuffle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l5.1 5.1"/><path d="M4 4l5 5"/></svg>
+    </button>
+    <button class="ctrl-btn" onclick="prevSong()" title="Sebelumnya">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+    </button>
+    <button class="play-btn" id="mpp-play-btn" onclick="togglePlay()">
+      <svg viewBox="0 0 24 24" fill="currentColor" id="mpp-play-icon"><polygon points="5,3 19,12 5,21"/></svg>
+    </button>
+    <button class="ctrl-btn" onclick="nextSong()" title="Berikutnya">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+    </button>
+    <button class="ctrl-btn" id="mpp-repeat-btn" onclick="toggleRepeat()" title="Repeat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="mpp-repeat-icon"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+    </button>
+  </div>
+  <div class="mpp-bottom-actions">
+    <button class="mpp-action-btn" onclick="toggleLyrics();closeMobilePanel()" title="Lirik">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+      Lirik
+    </button>
+  </div>
+</div>
+<div id="mobile-panel-overlay" onclick="closeMobilePanel()"></div>
 
 <!-- LYRICS PANEL -->
 <div id="lyrics-panel">
