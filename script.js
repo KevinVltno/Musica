@@ -501,6 +501,7 @@ function playSong(id, queueType) {
   updatePlayIcon();
 
   if (lyricsOpen) { updateLyricsHeader(); renderLyricsLines(); }
+  if (mobilePanelOpen) syncMobilePanel();
   refreshAllCards();
 }
 
@@ -538,6 +539,8 @@ function updatePlayIcon() {
   document.getElementById('play-icon').innerHTML = isPlaying ? pauseIcon : playIcon;
   const mobileBtn = document.getElementById('mobile-play-icon');
   if (mobileBtn) mobileBtn.innerHTML = isPlaying ? pauseIcon : playIcon;
+  const mppIcon = document.getElementById('mpp-play-icon');
+  if (mppIcon) mppIcon.innerHTML = isPlaying ? pauseIcon : playIcon;
 }
 
 function setBottomNav(page) {
@@ -550,6 +553,12 @@ function updateProgress() {
   const pct = currentDurSec ? (currentProgress / currentDurSec * 100) : 0;
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('time-cur').textContent = fmtTime(currentProgress);
+  const mppFill = document.getElementById('mpp-progress-fill');
+  if (mppFill) mppFill.style.width = pct + '%';
+  const mppCur = document.getElementById('mpp-time-cur');
+  if (mppCur) mppCur.textContent = fmtTime(currentProgress);
+  const mppTotal = document.getElementById('mpp-time-total');
+  if (mppTotal && currentDurSec) mppTotal.textContent = fmtTime(currentDurSec);
 }
 
 function seekSong(e) {
@@ -1173,6 +1182,87 @@ function seekToLyric(t) {
 document.getElementById('modal-rec-pl').addEventListener('click',   function(e){ if(e.target===this) closeRecModal(); });
 document.getElementById('modal-create').addEventListener('click',   function(e){ if(e.target===this) closeCreateModal(); });
 document.getElementById('modal-add-songs').addEventListener('click',function(e){ if(e.target===this) closeAddSongsModal(); });
+
+// ── MOBILE EXPANDED PLAYER PANEL ──
+let mobilePanelOpen = false;
+
+function openMobilePanelIfMobile() {
+  if (window.innerWidth > 768) return;
+  if (!currentSongId) return;
+  syncMobilePanel();
+  document.getElementById('mobile-player-panel').classList.add('open');
+  document.getElementById('mobile-panel-overlay').classList.add('open');
+  mobilePanelOpen = true;
+}
+
+function closeMobilePanel() {
+  document.getElementById('mobile-player-panel').classList.remove('open');
+  document.getElementById('mobile-panel-overlay').classList.remove('open');
+  mobilePanelOpen = false;
+}
+
+function syncMobilePanel() {
+  if (!currentSongId) return;
+  const song = SONGS.find(s => s.id === currentSongId);
+  if (!song) return;
+
+  // cover
+  const mppCover = document.getElementById('mpp-cover');
+  mppCover.style.cssText = `background:${song.bg};width:56px;height:56px;border-radius:12px;overflow:hidden;flex-shrink:0;display:grid;place-items:center;font-size:24px`;
+  mppCover.innerHTML = `<img src="${song.img}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block" onerror="this.style.display='none'">`;
+
+  document.getElementById('mpp-title').textContent  = song.title;
+  document.getElementById('mpp-artist').textContent = song.artist;
+
+  // progress
+  const pct = currentDurSec ? (currentProgress / currentDurSec * 100) : 0;
+  const mppFill = document.getElementById('mpp-progress-fill');
+  if (mppFill) mppFill.style.width = pct + '%';
+  document.getElementById('mpp-time-cur').textContent   = fmtTime(currentProgress);
+  document.getElementById('mpp-time-total').textContent = fmtTime(currentDurSec || parseDur(song.dur));
+
+  // play icon
+  const pauseIcon = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+  const playIcon  = '<polygon points="5,3 19,12 5,21"/>';
+  const mppPlayIcon = document.getElementById('mpp-play-icon');
+  if (mppPlayIcon) mppPlayIcon.innerHTML = isPlaying ? pauseIcon : playIcon;
+
+  // heart
+  const liked = likedIds.has(currentSongId);
+  const mppLikeBtn = document.getElementById('mpp-like-btn');
+  if (mppLikeBtn) {
+    mppLikeBtn.classList.toggle('liked', liked);
+    const h = document.getElementById('mpp-heart');
+    if (h) { h.setAttribute('fill', liked ? '#f43f5e' : 'none'); h.setAttribute('stroke', liked ? '#f43f5e' : 'currentColor'); }
+  }
+
+  // shuffle/repeat colors
+  const mppShuffle = document.getElementById('mpp-shuffle-btn');
+  if (mppShuffle) mppShuffle.style.color = isShuffle ? 'var(--accent)' : '';
+  const mppRepeat  = document.getElementById('mpp-repeat-btn');
+  if (mppRepeat) mppRepeat.style.color = repeatMode > 0 ? 'var(--accent)' : '';
+}
+
+// Seek from mobile panel progress bar
+document.addEventListener('DOMContentLoaded', () => {
+  const mppBar = document.getElementById('mpp-progress-bar');
+  if (mppBar) {
+    mppBar.addEventListener('click', e => {
+      if (!currentSongId) return;
+      const rect = mppBar.getBoundingClientRect();
+      const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const time = pct * (audioPlayer.duration || currentDurSec);
+      currentProgress = time;
+      audioPlayer.currentTime = time;
+      updateProgress();
+    });
+  }
+});
+
+// (mpp progress is synced inside updateProgress above)
+
+// Also sync play icon in mpp when togglePlay is called
+// (handled by patching the main updatePlayIcon above)
 
 // ── INIT ──
 renderHome();
