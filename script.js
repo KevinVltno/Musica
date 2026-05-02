@@ -10,6 +10,7 @@ const SONGS = [
   {id:8,  title:"Dengan Gembira",              artist:"Pebiantama",   src:"audio/Dengan Gembira.mp3",       dur:"5:17", bg:"#083344", pop:false, img:"img/8.png"},
   {id:9,  title:"Ku Mau Cinta Yesus Selamanya",         artist:"LifeGen Worship",      src:"audio/Cinta Yesus.mp3",    dur:"4:51", bg:"#500a1a", pop:false, img:"img/9.jpg"},
   {id:10, title:"Jadikan Hatiku Istana Cintamu",          artist:"Gerry & Gany",  src:"audio/Hatiku.mp3", dur:"4:32", bg:"#1e2a5f", pop:false, img:"img/10.png"},
+  {id:11, title:"Panggilanmu",          artist:"Yusup Warsito",  src:"audio/Panggilanmu.mp3", dur:"4:29", bg:"#1e2a5f", pop:false, img:"img/11.png"},
 ];
 
 // ── AUDIO PLAYER ──
@@ -1084,6 +1085,39 @@ const LYRICS = {
     {t:280, text:"Bersemayaman Tubuh dan Darah-Mu"},
     {t:289 ,   text:"♪"},
   ],
+
+    11: [
+    {t:0 ,   text:"♪"},
+    {t:41,  text:"Kujalani hidup ini"},
+    {t:47,  text:"lewat bukit dan lembah"},
+    {t:52,  text:"lewat gurun dan lautan"},
+    {t:58,  text:"ku terjang badai Taufan"},
+    {t:66,  text:"tak kurasa menderita"},
+    {t:72,  text:"walau miskin dan hina"},
+    {t:77,  text:"kuserahkan harapanku"},
+    {t:83,  text:"dibawah salibmu"},
+    {t:91,  text:"dalam hidupku selalu kudengar"},
+    {t:102, text:"dalam hidupku selalu kudengar"},
+    {t:113, text:"panggilan hidupku"},
+    {t:119, text:"kutahu ya Tuhan"},
+    {t:124, text:"Padamu kurasa bahagia"},
+    {t:135, text:"padamu kurasa bahagia"},
+    {t:145, text:"♪"},
+    {t:172, text:"ku kan tetap mengikuti"},
+    {t:177, text:"panggilanmu ya Tuhan"},
+    {t:182, text:"kuserahkan segalanya"},
+    {t:188, text:"dibawah salibmu"},
+    {t:196, text:"dalam hidupku selalu kudengar"},
+    {t:207, text:"dalam hidupku selalu kudengar"},
+    {t:219, text:"panggilan hidupku"},
+    {t:224, text:"kutahu ya Tuhan"},
+    {t:229, text:"padamu kurasa bahagia"},
+    {t:241, text:"padamu kurasa bahagia"},
+    {t:252, text:"padamu kurasa bahagia"},
+    {t:261, text:"♪"},
+  ],
+
+  
 };
 
 // ── LYRICS LOGIC ──
