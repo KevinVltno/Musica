@@ -70,13 +70,13 @@ nav{padding:8px 12px;flex-shrink:0}
 .section-title em:hover{color:var(--accent)}
 
 /* songs grid */
-.songs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px;margin-bottom:32px}
-.song-card{background:var(--card);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .25s;border:1px solid transparent;position:relative;group:true}
+.songs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px;margin-bottom:32px;align-items:start}
+.song-card{background:var(--card);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .25s;border:1px solid transparent;position:relative;display:flex;flex-direction:column}
 .song-card:hover{background:var(--card2);border-color:var(--border);transform:translateY(-2px)}
 .song-card.playing{border-color:rgba(201,162,39,.4);background:rgba(201,162,39,.06)}
-.cover{width:100%;aspect-ratio:1;border-radius:10px;margin-bottom:12px;position:relative;overflow:hidden}
-.cover img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
-.cover-play{position:absolute;inset:0;background:rgba(0,0,0,.4);display:grid;place-items:center;opacity:0;transition:opacity .2s;border-radius:10px}
+.cover{width:100%;height:160px;border-radius:10px;margin-bottom:12px;position:relative;overflow:hidden}
+.cover img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
+.cover-play{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);display:grid;place-items:center;opacity:0;transition:opacity .2s;border-radius:10px}
 .song-card:hover .cover-play{opacity:1}
 .cover-play svg{width:36px;height:36px;fill:white;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
 .song-title{font-size:13px;font-weight:600;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -454,6 +454,9 @@ nav{padding:8px 12px;flex-shrink:0}
   #search-input{font-size:14px;padding:12px 12px 12px 42px}
 }
 
+@media(max-width:768px){
+  .songs-grid{grid-template-columns:repeat(2,1fr)!important;gap:12px}
+}
 @media(max-width:480px){
   .songs-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .rec-playlist-grid{grid-template-columns:repeat(2,1fr);gap:10px}
@@ -474,3 +477,61 @@ nav{padding:8px 12px;flex-shrink:0}
 
 /* hide mobile play btn on desktop */
 #mobile-play-btn{display:none}
+
+/* ── MOBILE PLAYER EXPANDED PANEL ── */
+#mobile-panel-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:149;
+}
+#mobile-panel-overlay.open{display:block}
+#mobile-player-panel{
+  display:none;
+  position:fixed;bottom:60px;left:0;right:0;z-index:150;
+  background:var(--surface);
+  border-radius:24px 24px 0 0;
+  border-top:1px solid var(--border);
+  padding:0 24px 24px;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+}
+#mobile-player-panel.open{
+  display:block;
+  transform:translateY(0);
+}
+.mpp-handle-wrap{display:flex;justify-content:center;padding:14px 0 10px;cursor:pointer}
+.mpp-handle{width:40px;height:4px;background:var(--border);border-radius:2px}
+.mpp-song-info{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.mpp-cover{
+  width:56px;height:56px;border-radius:12px;
+  display:grid;place-items:center;font-size:24px;
+  flex-shrink:0;overflow:hidden;
+}
+.mpp-cover img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
+.mpp-meta{flex:1;min-width:0}
+.mpp-title{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mpp-artist{font-size:12px;color:var(--muted);margin-top:2px}
+.mpp-progress-wrap{margin-bottom:20px}
+.mpp-progress-bar{
+  width:100%;height:4px;background:var(--border);border-radius:2px;
+  cursor:pointer;position:relative;overflow:hidden;margin-bottom:8px;
+}
+.mpp-times{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.mpp-controls{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.mpp-controls .ctrl-btn svg{width:22px;height:22px}
+.mpp-controls .play-btn{width:56px;height:56px}
+.mpp-controls .play-btn svg{width:22px;height:22px}
+.mpp-bottom-actions{
+  display:flex;justify-content:center;gap:32px;
+  border-top:1px solid var(--border);
+  padding-top:20px;
+}
+.mpp-action-btn{
+  background:none;border:none;cursor:pointer;
+  color:var(--muted);display:flex;flex-direction:column;
+  align-items:center;gap:6px;font-size:11px;font-family:inherit;
+  transition:color .2s;
+}
+.mpp-action-btn:hover{color:var(--accent)}
+.mpp-action-btn svg{width:22px;height:22px}
